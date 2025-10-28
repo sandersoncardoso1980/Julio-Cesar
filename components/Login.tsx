@@ -1,25 +1,32 @@
 import React, { useState } from 'react';
 import { ZapIcon, MailIcon } from './Icons';
+import { supabase } from '../lib/supabase';
 
 interface LoginPageProps {
-    onLoginSuccess: () => void;
     onBack: () => void;
 }
 
-const LoginPage: React.FC<LoginPageProps> = ({ onLoginSuccess, onBack }) => {
+const LoginPage: React.FC<LoginPageProps> = ({ onBack }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
+    const [loading, setLoading] = useState(false);
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setError('');
+        setLoading(true);
 
-        if (email === 'julio@admin.com' && password === 'julio@admin') {
-            onLoginSuccess();
-        } else {
+        const { error } = await supabase.auth.signInWithPassword({
+            email: email,
+            password: password,
+        });
+
+        setLoading(false);
+        if (error) {
             setError('Credenciais inválidas. Tente novamente.');
-        }
+        } 
+        // Se o login for bem-sucedido, o onAuthStateChange no App.tsx tratará da navegação.
     };
 
     return (
@@ -56,7 +63,7 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLoginSuccess, onBack }) => {
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
                                     className="appearance-none block w-full px-3 py-2 pl-10 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:ring-brand-blue focus:border-brand-blue sm:text-sm"
-                                    placeholder="E-mail"
+                                    placeholder="julio@admin.com"
                                 />
                             </div>
                         </div>
@@ -73,7 +80,7 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLoginSuccess, onBack }) => {
                                     value={password}
                                     onChange={(e) => setPassword(e.target.value)}
                                     className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-brand-blue focus:border-brand-blue sm:text-sm"
-                                    placeholder="Senha"
+                                    placeholder="julio@admin"
                                 />
                             </div>
                         </div>
@@ -81,9 +88,10 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLoginSuccess, onBack }) => {
                         <div>
                             <button
                                 type="submit"
-                                className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-brand-blue hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-blue"
+                                disabled={loading}
+                                className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-brand-blue hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-blue disabled:opacity-50"
                             >
-                                Entrar
+                                {loading ? 'A entrar...' : 'Entrar'}
                             </button>
                         </div>
                     </form>

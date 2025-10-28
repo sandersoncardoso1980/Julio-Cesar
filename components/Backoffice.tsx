@@ -3,12 +3,10 @@ import { Lead, LeadStatus, Priority, AppSettings } from '../types';
 import { PhoneIcon, MailIcon, UserIcon, ZapIcon, EuroIcon } from './Icons';
 import SettingsPage from './SettingsPage';
 import ProposalExplanation from './ProposalExplanation';
-import { MOCK_LEADS } from '../constants';
-
+import { supabase } from '../lib/supabase';
 
 interface BackofficeProps {
     leads: Lead[];
-    onLogout: () => void;
     appSettings: AppSettings;
     onSaveSettings: (settings: AppSettings) => void;
 }
@@ -43,27 +41,32 @@ const LeadListItem: React.FC<{ lead: Lead }> = ({ lead }) => {
     return (
         <div className="bg-white rounded-lg shadow-sm hover:shadow-lg transition-shadow duration-300">
             <div className="p-4 cursor-pointer" onClick={() => setExpanded(!expanded)}>
-                <div className="grid grid-cols-12 gap-4 items-center">
-                    <div className="col-span-12 md:col-span-3">
+                <div className="flex flex-wrap items-center justify-between gap-y-3 gap-x-4">
+                    {/* Main Info */}
+                    <div className="flex-grow min-w-[200px]">
                         <p className="font-bold text-brand-dark">{lead.fullName}</p>
                         <p className="text-sm text-gray-500">{lead.postalCode}</p>
                     </div>
-                    <div className="col-span-4 md:col-span-2 text-center">
-                         <span className={`px-3 py-1 text-sm font-semibold rounded-full ${priorityClasses[lead.priority]} border ${priorityClasses[lead.priority].replace('bg-', 'border-')}`}>
+                    
+                    {/* Status indicators */}
+                    <div className="flex items-center gap-4 flex-shrink-0">
+                        <span title={`Score: ${lead.score}`} className={`px-3 py-1 text-sm font-semibold rounded-full text-center ${priorityClasses[lead.priority]} border ${priorityClasses[lead.priority].replace('bg-', 'border-')}`}>
                             {lead.score}
                         </span>
-                    </div>
-                    <div className="col-span-8 md:col-span-3 text-center">
-                        <span className={`px-2 py-1 text-xs font-medium rounded-full ${statusClasses[lead.status]}`}>
+                        <span className={`px-2 py-1 text-xs font-medium rounded-full whitespace-nowrap ${statusClasses[lead.status]}`}>
                             {lead.status}
                         </span>
                     </div>
-                    <div className="hidden md:block md:col-span-2 text-sm text-gray-500 text-center">
-                        {new Date(lead.createdAt).toLocaleDateString('pt-PT')}
-                    </div>
-                    <div className="col-span-12 md:col-span-2 flex justify-end items-center space-x-2">
-                        <a href={`tel:${lead.phone}`} className="p-2 text-gray-500 hover:text-brand-green hover:bg-gray-100 rounded-full"><PhoneIcon className="h-5 w-5"/></a>
-                        <a href={`mailto:${lead.email}`} className="p-2 text-gray-500 hover:text-brand-blue hover:bg-gray-100 rounded-full"><MailIcon className="h-5 w-5"/></a>
+
+                    {/* Date and Actions */}
+                    <div className="flex items-center gap-4 flex-shrink-0 w-full justify-end sm:w-auto">
+                        <div className="hidden sm:block text-sm text-gray-500">
+                            {new Date(lead.createdAt).toLocaleDateString('pt-PT')}
+                        </div>
+                        <div className="flex items-center space-x-1">
+                            <a href={`tel:${lead.phone}`} className="p-2 text-gray-500 hover:text-brand-green hover:bg-gray-100 rounded-full" aria-label={`Ligar para ${lead.fullName}`}><PhoneIcon className="h-5 w-5"/></a>
+                            <a href={`mailto:${lead.email}`} className="p-2 text-gray-500 hover:text-brand-blue hover:bg-gray-100 rounded-full" aria-label={`Enviar email para ${lead.fullName}`}><MailIcon className="h-5 w-5"/></a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -135,8 +138,12 @@ const LeadsList: React.FC<{leads: Lead[]}> = ({ leads }) => {
     )
 }
 
-const Backoffice: React.FC<BackofficeProps> = ({ leads, onLogout, appSettings, onSaveSettings }) => {
+const Backoffice: React.FC<BackofficeProps> = ({ leads, appSettings, onSaveSettings }) => {
     const [activeTab, setActiveTab] = useState<ActiveTab>('leads');
+    
+    const handleLogout = async () => {
+        await supabase.auth.signOut();
+    };
     
     const leadsToday = leads.filter(l => new Date(l.createdAt).toDateString() === new Date().toDateString()).length;
     const conversionRate = leads.length > 0 ? (leads.filter(l => l.status === LeadStatus.CONVERTED).length / leads.length * 100).toFixed(1) : "0.0";
@@ -146,7 +153,7 @@ const Backoffice: React.FC<BackofficeProps> = ({ leads, onLogout, appSettings, o
             case 'leads':
                 return <LeadsList leads={leads} />;
             case 'calculator':
-                return <ProposalExplanation settings={appSettings} sampleLead={MOCK_LEADS[0]} />;
+                return <ProposalExplanation settings={appSettings} sampleLead={leads[0]} />;
             case 'settings':
                 return <SettingsPage settings={appSettings} onSave={onSaveSettings} />;
             default:
@@ -166,7 +173,7 @@ const Backoffice: React.FC<BackofficeProps> = ({ leads, onLogout, appSettings, o
              <header className="bg-white shadow-sm sticky top-0 z-10">
                 <div className="container mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center py-4">
                      <h1 className="text-2xl font-bold text-brand-dark">Painel de Gestão</h1>
-                     <button onClick={onLogout} className="text-sm font-semibold text-gray-600 hover:text-brand-orange">Sair</button>
+                     <button onClick={handleLogout} className="text-sm font-semibold text-gray-600 hover:text-brand-orange">Sair</button>
                 </div>
                 <nav className="container mx-auto px-4 sm:px-6 lg:px-8 pb-3">
                     <div className="flex items-center space-x-2 bg-gray-100 p-1 rounded-lg">

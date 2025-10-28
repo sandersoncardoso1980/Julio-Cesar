@@ -1,7 +1,6 @@
-
 import React from 'react';
-import { Lead, AppSettings } from '../types';
-import { ZapIcon, EuroIcon, ChevronDownIcon, CheckCircleIcon } from './Icons';
+import { Lead, AppSettings, NewLeadData } from '../types';
+import { ZapIcon, EuroIcon, ChevronDownIcon, CheckCircleIcon, ShieldIcon, LockIcon, StarIcon, UserIcon } from './Icons';
 import { FAQS, TESTIMONIALS } from '../constants';
 import LeadForm from './LeadForm';
 
@@ -13,16 +12,17 @@ const Header: React.FC<{ onBackofficeClick: () => void }> = ({ onBackofficeClick
             <div className="flex justify-between items-center py-4">
                 <div className="flex items-center space-x-2">
                     <ZapIcon className="h-8 w-8 text-brand-green" />
-                    <span className="text-2xl font-bold text-brand-dark">LeadGenius Energia</span>
+                    <span className="text-xl sm:text-2xl font-bold text-brand-dark">LeadGenius Energia</span>
                 </div>
-                <div className="flex items-center space-x-4">
+                <div className="flex items-center space-x-2 sm:space-x-4">
                      <button
                         onClick={onBackofficeClick}
-                        className="hidden md:inline-block text-sm font-semibold text-gray-600 hover:text-brand-blue"
+                        className="p-2 text-gray-600 hover:text-brand-blue hover:bg-gray-100 rounded-full transition-colors"
+                        aria-label="Área do Vendedor"
                     >
-                        Área do Vendedor
+                        <UserIcon className="h-6 w-6"/>
                     </button>
-                    <a href="#simulacao" className="bg-brand-orange hover:bg-orange-600 text-white font-bold py-2 px-4 rounded-full shadow-lg transition duration-300 transform hover:scale-105">
+                    <a href="#simulacao" className="bg-brand-orange hover:bg-orange-600 text-white font-bold py-2 px-4 rounded-full shadow-lg transition duration-300 transform hover:scale-105 text-sm sm:text-base">
                         Simular Agora
                     </a>
                 </div>
@@ -131,19 +131,19 @@ const ComparisonTable: React.FC<{ settings: AppSettings }> = ({ settings }) => (
 const TrustBadges: React.FC = () => (
     <section className="py-12 bg-white">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-            <h3 className="text-center text-gray-500 font-semibold mb-6">Confiança e Segurança Garantidas</h3>
-            <div className="flex justify-center items-center space-x-8 md:space-x-12">
-                <div className="text-center text-gray-600">
-                    <img src="https://via.placeholder.com/100x50?text=Selo+ERSE" alt="Selo ERSE" className="h-12 mx-auto mb-2 opacity-70"/>
-                    <p className="text-sm">Regulado pela ERSE</p>
+            <h3 className="text-center text-gray-500 font-semibold mb-8">Confiança e Segurança Garantidas</h3>
+            <div className="flex justify-around items-start max-w-3xl mx-auto">
+                <div className="flex flex-col items-center text-center text-gray-600 w-1/3 px-1">
+                    <ShieldIcon className="h-10 w-10 sm:h-12 sm:w-12 text-brand-blue opacity-75 mb-2"/>
+                    <p className="text-xs sm:text-sm font-medium">Regulado pela ERSE</p>
                 </div>
-                <div className="text-center text-gray-600">
-                    <img src="https://via.placeholder.com/100x50?text=Selo+SSL" alt="Certificado SSL" className="h-12 mx-auto mb-2 opacity-70"/>
-                    <p className="text-sm">Pagamento Seguro</p>
+                <div className="flex flex-col items-center text-center text-gray-600 w-1/3 px-1">
+                    <LockIcon className="h-10 w-10 sm:h-12 sm:w-12 text-brand-blue opacity-75 mb-2"/>
+                    <p className="text-xs sm:text-sm font-medium">Pagamento Seguro</p>
                 </div>
-                <div className="text-center text-gray-600">
-                    <img src="https://via.placeholder.com/100x50?text=5+Estrelas" alt="5 Estrelas" className="h-12 mx-auto mb-2 opacity-70"/>
-                    <p className="text-sm">Satisfação Garantida</p>
+                <div className="flex flex-col items-center text-center text-gray-600 w-1/3 px-1">
+                   <StarIcon className="h-10 w-10 sm:h-12 sm:w-12 text-brand-blue opacity-75 mb-2"/>
+                    <p className="text-xs sm:text-sm font-medium">Satisfação Garantida</p>
                 </div>
             </div>
         </div>
@@ -221,7 +221,7 @@ const Footer: React.FC = () => (
 // --- Main LandingPage Component ---
 
 interface LandingPageProps {
-    onNewLead: (lead: Lead) => void;
+    onNewLead: (lead: NewLeadData) => void;
     onBackofficeClick: () => void;
     settings: AppSettings;
 }
@@ -241,7 +241,6 @@ const LandingPage: React.FC<LandingPageProps> = ({ onNewLead, onBackofficeClick,
                 </section>
                 <TestimonialsSection />
                 <TrustBadges />
-                {/* Fix: Corrected typo from FqSection to FaqSection */}
                 <FaqSection />
             </main>
             <Footer />

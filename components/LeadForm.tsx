@@ -1,11 +1,10 @@
-
 import React, { useState } from 'react';
-import { Lead, LeadStatus, HousingType, TariffType } from '../types';
+import { NewLeadData, LeadStatus, HousingType, TariffType } from '../types';
 import { useLeadScoring } from '../hooks/useLeadScoring';
 import { CheckCircleIcon, UserIcon, EuroIcon, ZapIcon, PhoneIcon, MailIcon, MapPinIcon } from './Icons';
 
 interface LeadFormProps {
-    onNewLead: (lead: Lead) => void;
+    onNewLead: (lead: NewLeadData) => void;
 }
 
 const LeadForm: React.FC<LeadFormProps> = ({ onNewLead }) => {
@@ -45,8 +44,7 @@ const LeadForm: React.FC<LeadFormProps> = ({ onNewLead }) => {
         const timeOnPage = Math.round((Date.now() - startTime) / 1000);
         const { score, priority } = calculateScore({ ...formData, visitedCalculator: true, timeOnPage });
 
-        const newLead: Lead = {
-            id: new Date().toISOString(),
+        const newLeadData: NewLeadData = {
             ...formData,
             occupants: Number(formData.occupants),
             avgEnergyBill: Number(formData.avgEnergyBill),
@@ -58,12 +56,11 @@ const LeadForm: React.FC<LeadFormProps> = ({ onNewLead }) => {
             priority,
             status: LeadStatus.NEW,
             contactHistory: [],
-            createdAt: new Date().toISOString(),
             visitedCalculator: true,
             timeOnPage,
         };
 
-        onNewLead(newLead);
+        onNewLead(newLeadData);
         setSubmitted(true);
     };
     
@@ -185,4 +182,3 @@ const SelectInput: React.FC<React.SelectHTMLAttributes<HTMLSelectElement> & { la
 );
 
 export default LeadForm;
-   

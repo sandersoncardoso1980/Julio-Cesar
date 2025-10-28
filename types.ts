@@ -59,6 +59,8 @@ export interface Lead {
     changeHistory: number;
 }
 
+export type NewLeadData = Omit<Lead, 'id' | 'createdAt'>;
+
 export interface Competitor {
     name: string;
     logoUrl: string;

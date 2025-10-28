@@ -4,11 +4,20 @@ import { UserIcon, EuroIcon, ZapIcon } from './Icons';
 
 interface ProposalExplanationProps {
     settings: AppSettings;
-    sampleLead: Lead;
+    sampleLead?: Lead;
 }
 
 const ProposalExplanation: React.FC<ProposalExplanationProps> = ({ settings, sampleLead }) => {
     
+    if (!sampleLead) {
+        return (
+             <div className="text-center p-12 bg-white rounded-lg shadow-md">
+                <h2 className="text-2xl font-bold text-brand-dark">Guia de Cálculo da Proposta</h2>
+                <p className="text-gray-600 mt-2">Assim que o primeiro lead for capturado, poderá ver aqui um exemplo detalhado de como a proposta de poupança é calculada.</p>
+            </div>
+        )
+    }
+
     // Find competitor prices, fallback to first competitor if not found
     const energyCompetitor = settings.competitors.find(c => c.name === sampleLead.currentEnergyProvider) || settings.competitors[0];
     const gasCompetitor = settings.competitors.find(c => c.name === sampleLead.currentGasProvider) || settings.competitors[0];
@@ -37,7 +46,7 @@ const ProposalExplanation: React.FC<ProposalExplanationProps> = ({ settings, sam
 
             <div className="bg-white p-6 rounded-xl shadow-md mb-6">
                 <div className="flex items-center">
-                    <div className="bg-brand-blue text-white rounded-full h-12 w-12 flex items-center justify-center">
+                    <div className="bg-brand-blue text-white rounded-full h-12 w-12 flex items-center justify-center flex-shrink-0">
                         <UserIcon className="h-6 w-6" />
                     </div>
                     <div className="ml-4">
@@ -53,7 +62,7 @@ const ProposalExplanation: React.FC<ProposalExplanationProps> = ({ settings, sam
                     title="Analisar Custos Atuais do Lead"
                     description="Começamos por identificar os custos mensais que o lead tem com os seus fornecedores atuais."
                 >
-                    <div className="flex space-x-4">
+                    <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
                         <Metric title="Fatura de Energia" value={`€${sampleLead.avgEnergyBill.toFixed(2)}`} subtitle={`com ${sampleLead.currentEnergyProvider}`} />
                         <Metric title="Fatura de Gás" value={`€${sampleLead.avgGasBill.toFixed(2)}`} subtitle={`com ${sampleLead.currentGasProvider}`} />
                     </div>
@@ -64,7 +73,7 @@ const ProposalExplanation: React.FC<ProposalExplanationProps> = ({ settings, sam
                     title="Estimar o Consumo"
                     description="Com base nos custos e nos preços conhecidos dos concorrentes, estimamos o consumo mensal do lead. (Ex: Consumo kWh = Fatura € / Preço kWh do concorrente)."
                 >
-                     <div className="flex space-x-4">
+                     <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
                         <Metric title="Consumo Estimado Energia" value={`${estimatedKwh.toFixed(2)} kWh`} />
                         <Metric title="Consumo Estimado Gás" value={`${estimatedM3.toFixed(2)} m³`} />
                     </div>
@@ -75,7 +84,7 @@ const ProposalExplanation: React.FC<ProposalExplanationProps> = ({ settings, sam
                     title="Calcular a Nova Fatura com o Nosso Plano"
                     description="Aplicamos os nossos preços (configurados por si) ao consumo estimado para encontrar o novo custo mensal."
                 >
-                     <div className="flex space-x-4">
+                     <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
                         <Metric title="Nova Fatura Energia" value={`€${newEnergyBill.toFixed(2)}`} subtitle={`(Nosso preço: €${settings.ourPlan.energyPrice.toFixed(3)}/kWh)`} />
                         <Metric title="Nova Fatura Gás" value={`€${newGasBill.toFixed(2)}`} subtitle={`(Nosso preço: €${settings.ourPlan.gasPrice.toFixed(3)}/m³)`} />
                     </div>
@@ -83,7 +92,7 @@ const ProposalExplanation: React.FC<ProposalExplanationProps> = ({ settings, sam
 
                  <div className="bg-green-100 border-l-4 border-green-500 p-6 rounded-r-lg shadow-lg">
                     <div className="flex items-center">
-                        <div className="bg-green-500 text-white rounded-full h-12 w-12 flex items-center justify-center text-xl font-bold">
+                        <div className="bg-green-500 text-white rounded-full h-12 w-12 flex items-center justify-center text-xl font-bold flex-shrink-0">
                            €
                         </div>
                         <div className="ml-4">
@@ -115,7 +124,7 @@ const StepCard: React.FC<{ step: string, title: string, description: string, chi
     <div className="bg-white rounded-xl shadow-md overflow-hidden">
         <div className="p-6">
             <div className="flex items-center">
-                <div className="bg-gray-200 text-brand-blue font-bold rounded-full h-8 w-8 flex items-center justify-center">
+                <div className="bg-gray-200 text-brand-blue font-bold rounded-full h-8 w-8 flex items-center justify-center flex-shrink-0">
                     {step}
                 </div>
                 <h3 className="ml-4 text-lg font-semibold text-gray-800">{title}</h3>
