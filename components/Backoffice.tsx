@@ -74,16 +74,16 @@ const LeadListItem: React.FC<{ lead: Lead }> = ({ lead }) => {
             </div>
             {expanded && (
                 <div className="border-t border-gray-200 p-4 bg-gray-50">
-                    <h4 className="font-semibold mb-2">Detalhes do Lead:</h4>
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
-                        <div><strong className="block text-gray-500">Email:</strong> {lead.email}</div>
-                        <div><strong className="block text-gray-500">Telefone:</strong> {lead.phone}</div>
-                        <div><strong className="block text-gray-500">Habitação:</strong> {HousingTypeLabels[lead.housingType as HousingType]} ({lead.occupants}p)</div>
-                        <div><strong className="block text-gray-500">Potência:</strong> {lead.contractedPower} kVA</div>
-                        <div><strong className="block text-gray-500">Fatura Energia:</strong> €{lead.avgEnergyBill}</div>
-                        <div><strong className="block text-gray-500">Fatura Gás:</strong> €{lead.avgGasBill}</div>
-                        <div><strong className="block text-gray-500">Fornecedor:</strong> {lead.currentEnergyProvider}</div>
-                        <div><strong className="block text-gray-500">Tarifa:</strong> {TariffTypeLabels[lead.tariffType as TariffType]}</div>
+                    <h4 className="font-semibold mb-2 text-gray-900">Detalhes do Lead:</h4>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 text-sm text-gray-800">
+                        <div className="break-words"><strong className="block text-gray-500">Email:</strong> {lead.email}</div>
+                        <div className="break-words"><strong className="block text-gray-500">Telefone:</strong> {lead.phone}</div>
+                        <div className="break-words"><strong className="block text-gray-500">Habitação:</strong> {HousingTypeLabels[lead.housingType as HousingType]} ({lead.occupants}p)</div>
+                        <div className="break-words"><strong className="block text-gray-500">Potência:</strong> {lead.contractedPower} kVA</div>
+                        <div className="break-words"><strong className="block text-gray-500">Fatura Energia:</strong> €{lead.avgEnergyBill}</div>
+                        <div className="break-words"><strong className="block text-gray-500">Fatura Gás:</strong> €{lead.avgGasBill}</div>
+                        <div className="break-words"><strong className="block text-gray-500">Fornecedor:</strong> {lead.currentEnergyProvider}</div>
+                        <div className="break-words"><strong className="block text-gray-500">Tarifa:</strong> {TariffTypeLabels[lead.tariffType as TariffType]}</div>
                     </div>
                 </div>
             )}
