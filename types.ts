@@ -1,26 +1,26 @@
 export enum HousingType {
-    APARTMENT = 'Apartamento',
-    HOUSE = 'Moradia',
+    APARTMENT = 'APARTMENT',
+    HOUSE = 'HOUSE',
 }
 
 export enum TariffType {
-    SIMPLE = 'Simples',
-    BI_HOURLY = 'Bi-Horário',
-    TRI_HOURLY = 'Tri-Horário',
+    SIMPLE = 'SIMPLE',
+    BI_HOURLY = 'BI_HOURLY',
+    TRI_HOURLY = 'TRI_HOURLY',
 }
 
 export enum LeadStatus {
-    NEW = 'Novo',
-    CONTACTED = 'Contactado',
-    SCHEDULED = 'Agendado',
-    CONVERTED = 'Convertido',
-    NURTURING = 'Nurturing',
+    NEW = 'NEW',
+    CONTACTED = 'CONTACTED',
+    SCHEDULED = 'SCHEDULED',
+    CONVERTED = 'CONVERTED',
+    NURTURING = 'NURTURING',
 }
 
 export enum Priority {
-    HIGH = 'Alta',
-    MEDIUM = 'Média',
-    LOW = 'Baixa',
+    HIGH = 'HIGH',
+    MEDIUM = 'MEDIUM',
+    LOW = 'LOW',
 }
 
 export interface ContactHistory {

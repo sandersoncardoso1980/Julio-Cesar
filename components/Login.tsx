@@ -63,7 +63,7 @@ const LoginPage: React.FC<LoginPageProps> = ({ onBack }) => {
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
                                     className="appearance-none block w-full px-3 py-2 pl-10 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:ring-brand-blue focus:border-brand-blue sm:text-sm"
-                                    placeholder="julio@admin.com"
+                                    placeholder="O seu email"
                                 />
                             </div>
                         </div>
@@ -80,7 +80,7 @@ const LoginPage: React.FC<LoginPageProps> = ({ onBack }) => {
                                     value={password}
                                     onChange={(e) => setPassword(e.target.value)}
                                     className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-brand-blue focus:border-brand-blue sm:text-sm"
-                                    placeholder="julio@admin"
+                                    placeholder="A sua password"
                                 />
                             </div>
                         </div>

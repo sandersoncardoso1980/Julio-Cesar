@@ -1,4 +1,4 @@
-import { Competitor, FaqItem, Testimonial } from './types';
+import { Competitor, FaqItem, Testimonial, HousingType, TariffType, LeadStatus, Priority } from './types';
 
 export const INITIAL_COMPETITORS: Competitor[] = [
     { name: 'EDP', logoUrl: 'https://via.placeholder.com/100x40?text=EDP', energyPrice: 0.16, gasPrice: 0.08 },
@@ -53,3 +53,28 @@ export const TESTIMONIALS: Testimonial[] = [
         avatarUrl: 'https://i.pravatar.cc/150?img=5'
     }
 ];
+
+export const HousingTypeLabels: Record<HousingType, string> = {
+    [HousingType.APARTMENT]: 'Apartamento',
+    [HousingType.HOUSE]: 'Moradia',
+};
+
+export const TariffTypeLabels: Record<TariffType, string> = {
+    [TariffType.SIMPLE]: 'Simples',
+    [TariffType.BI_HOURLY]: 'Bi-Horário',
+    [TariffType.TRI_HOURLY]: 'Tri-Horário',
+};
+
+export const LeadStatusLabels: Record<LeadStatus, string> = {
+    [LeadStatus.NEW]: 'Novo',
+    [LeadStatus.CONTACTED]: 'Contactado',
+    [LeadStatus.SCHEDULED]: 'Agendado',
+    [LeadStatus.CONVERTED]: 'Convertido',
+    [LeadStatus.NURTURING]: 'Nurturing',
+};
+
+export const PriorityLabels: Record<Priority, string> = {
+    [Priority.HIGH]: 'Alta Prioridade',
+    [Priority.MEDIUM]: 'Média Prioridade',
+    [Priority.LOW]: 'Baixa Prioridade',
+};

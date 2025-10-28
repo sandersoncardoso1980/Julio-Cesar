@@ -1,9 +1,11 @@
 import React, { useState, useMemo } from 'react';
-import { Lead, LeadStatus, Priority, AppSettings } from '../types';
+import { Lead, LeadStatus, Priority, AppSettings, HousingType, TariffType } from '../types';
 import { PhoneIcon, MailIcon, UserIcon, ZapIcon, EuroIcon } from './Icons';
 import SettingsPage from './SettingsPage';
 import ProposalExplanation from './ProposalExplanation';
 import { supabase } from '../lib/supabase';
+import { LeadStatusLabels, PriorityLabels, HousingTypeLabels, TariffTypeLabels } from '../constants';
+
 
 interface BackofficeProps {
     leads: Lead[];
@@ -54,7 +56,7 @@ const LeadListItem: React.FC<{ lead: Lead }> = ({ lead }) => {
                             {lead.score}
                         </span>
                         <span className={`px-2 py-1 text-xs font-medium rounded-full whitespace-nowrap ${statusClasses[lead.status]}`}>
-                            {lead.status}
+                            {LeadStatusLabels[lead.status]}
                         </span>
                     </div>
 
@@ -76,12 +78,12 @@ const LeadListItem: React.FC<{ lead: Lead }> = ({ lead }) => {
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
                         <div><strong className="block text-gray-500">Email:</strong> {lead.email}</div>
                         <div><strong className="block text-gray-500">Telefone:</strong> {lead.phone}</div>
-                        <div><strong className="block text-gray-500">Habitação:</strong> {lead.housingType} ({lead.occupants}p)</div>
+                        <div><strong className="block text-gray-500">Habitação:</strong> {HousingTypeLabels[lead.housingType as HousingType]} ({lead.occupants}p)</div>
                         <div><strong className="block text-gray-500">Potência:</strong> {lead.contractedPower} kVA</div>
                         <div><strong className="block text-gray-500">Fatura Energia:</strong> €{lead.avgEnergyBill}</div>
                         <div><strong className="block text-gray-500">Fatura Gás:</strong> €{lead.avgGasBill}</div>
                         <div><strong className="block text-gray-500">Fornecedor:</strong> {lead.currentEnergyProvider}</div>
-                        <div><strong className="block text-gray-500">Tarifa:</strong> {lead.tariffType}</div>
+                        <div><strong className="block text-gray-500">Tarifa:</strong> {TariffTypeLabels[lead.tariffType as TariffType]}</div>
                     </div>
                 </div>
             )}
@@ -116,11 +118,11 @@ const LeadsList: React.FC<{leads: Lead[]}> = ({ leads }) => {
                     />
                     <select className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-brand-blue" onChange={e => setFilter(f => ({ ...f, status: e.target.value }))}>
                         <option value="all">Todos os Status</option>
-                        {Object.values(LeadStatus).map(s => <option key={s} value={s}>{s}</option>)}
+                        {Object.entries(LeadStatusLabels).map(([value, label]) => <option key={value} value={value}>{label}</option>)}
                     </select>
                      <select className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-brand-blue" onChange={e => setFilter(f => ({ ...f, priority: e.target.value }))}>
                         <option value="all">Todas as Prioridades</option>
-                        {Object.values(Priority).map(p => <option key={p} value={p}>{p}</option>)}
+                        {Object.entries(PriorityLabels).map(([value, label]) => <option key={value} value={value}>{label}</option>)}
                     </select>
                     <button className="bg-brand-blue text-white font-bold py-2 px-4 rounded-md hover:bg-blue-700">Exportar CSV</button>
                 </div>

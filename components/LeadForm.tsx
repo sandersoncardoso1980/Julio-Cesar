@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { NewLeadData, LeadStatus, HousingType, TariffType } from '../types';
 import { useLeadScoring } from '../hooks/useLeadScoring';
 import { CheckCircleIcon, UserIcon, EuroIcon, ZapIcon, PhoneIcon, MailIcon, MapPinIcon } from './Icons';
+import { HousingTypeLabels, TariffTypeLabels } from '../constants';
 
 interface LeadFormProps {
     onNewLead: (lead: NewLeadData) => void;
@@ -28,6 +29,9 @@ const LeadForm: React.FC<LeadFormProps> = ({ onNewLead }) => {
     const [submitted, setSubmitted] = useState(false);
     const { calculateScore } = useLeadScoring();
     const startTime = useState(Date.now())[0];
+    
+    const providerOptionsArray = ['EDP', 'Galp', 'Endesa', 'Outro'];
+    const providerOptionsMap = Object.fromEntries(providerOptionsArray.map(opt => [opt, opt]));
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value, type } = e.target;
@@ -93,10 +97,10 @@ const LeadForm: React.FC<LeadFormProps> = ({ onNewLead }) => {
                     <>
                         <h3 className="text-xl font-semibold text-white mb-6">Sobre a sua Habitação</h3>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <SelectInput label="Tipo de Habitação" name="housingType" value={formData.housingType} onChange={handleChange} options={Object.values(HousingType)} />
+                            <SelectInput label="Tipo de Habitação" name="housingType" value={formData.housingType} onChange={handleChange} options={HousingTypeLabels} />
                             <NumberInput label="Número de Ocupantes" name="occupants" value={formData.occupants} onChange={handleChange} min={1} />
-                            <SelectInput label="Fornecedor Atual (Energia)" name="currentEnergyProvider" value={formData.currentEnergyProvider} onChange={handleChange} options={['EDP', 'Galp', 'Endesa', 'Outro']} required/>
-                            <SelectInput label="Fornecedor Atual (Gás)" name="currentGasProvider" value={formData.currentGasProvider} onChange={handleChange} options={['EDP', 'Galp', 'Endesa', 'Outro']} required/>
+                            <SelectInput label="Fornecedor Atual (Energia)" name="currentEnergyProvider" value={formData.currentEnergyProvider} onChange={handleChange} options={providerOptionsMap} required/>
+                            <SelectInput label="Fornecedor Atual (Gás)" name="currentGasProvider" value={formData.currentGasProvider} onChange={handleChange} options={providerOptionsMap} required/>
                         </div>
                     </>
                 );
@@ -108,7 +112,7 @@ const LeadForm: React.FC<LeadFormProps> = ({ onNewLead }) => {
                             <NumberInput label="Fatura Média de Energia (€)" name="avgEnergyBill" value={formData.avgEnergyBill} onChange={handleChange} min={0} step={5} />
                             <NumberInput label="Fatura Média de Gás (€)" name="avgGasBill" value={formData.avgGasBill} onChange={handleChange} min={0} step={5} />
                             <NumberInput label="Potência Contratada (kVA)" name="contractedPower" value={formData.contractedPower} onChange={handleChange} min={1.15} step={1.15} />
-                            <SelectInput label="Tipo de Tarifa" name="tariffType" value={formData.tariffType} onChange={handleChange} options={Object.values(TariffType)} />
+                            <SelectInput label="Tipo de Tarifa" name="tariffType" value={formData.tariffType} onChange={handleChange} options={TariffTypeLabels} />
                             <NumberInput label="Anos com fornecedor atual" name="yearsWithProvider" value={formData.yearsWithProvider} onChange={handleChange} min={0} />
                             <NumberInput label="Nº de mudanças nos últimos 5 anos" name="changeHistory" value={formData.changeHistory} onChange={handleChange} min={0} />
                         </div>
@@ -172,11 +176,12 @@ const NumberInput: React.FC<React.InputHTMLAttributes<HTMLInputElement> & { labe
     </div>
 );
 
-const SelectInput: React.FC<React.SelectHTMLAttributes<HTMLSelectElement> & { label: string, options: string[] }> = ({ label, options, ...props }) => (
+const SelectInput: React.FC<React.SelectHTMLAttributes<HTMLSelectElement> & { label: string, options: Record<string, string> }> = ({ label, options, ...props }) => (
     <div>
         <label className="block text-sm font-medium text-white mb-1">{label}</label>
         <select {...props} className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-brand-orange text-gray-800">
-            {options.map(opt => <option key={opt} value={opt}>{opt}</option>)}
+            {props.required && <option value="" disabled>Selecione...</option>}
+            {Object.entries(options).map(([value, label]) => <option key={value} value={value}>{label}</option>)}
         </select>
     </div>
 );
