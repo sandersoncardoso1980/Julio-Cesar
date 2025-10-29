@@ -4,6 +4,7 @@ import { ZapIcon, EuroIcon, ChevronDownIcon, CheckCircleIcon, ShieldIcon, LockIc
 import { FAQS, TESTIMONIALS } from '../constants';
 import LeadForm from './LeadForm';
 
+
 // --- Sub-components defined outside the main component ---
 
 const Header: React.FC<{ onBackofficeClick: () => void }> = ({ onBackofficeClick }) => (
@@ -73,59 +74,67 @@ const Calculator: React.FC<{savingsPercentage: number}> = ({ savingsPercentage }
                     <div className="mt-8 bg-green-100 border-l-4 border-brand-green p-6 rounded-r-lg">
                         <p className="text-lg text-green-800">Poupança Anual Estimada:</p>
                         <p className="text-4xl font-extrabold text-brand-green">€{savings}</p>
+                        <p className="text-xs text-gray-500 mt-4 italic max-w-md mx-auto leading-relaxed">
+    <strong>Nota:</strong> A <em>Poupança Anual Estimada</em> é meramente indicativa e baseia-se numa percentagem média de poupança. 
+    Cada fornecedor utiliza os seus próprios parâmetros de cálculo, como o número de moradores, o consumo mensal real, 
+    a potência contratada, tarifas horárias e outros fatores. O valor final pode variar.
+</p>
                     </div>
                 </div>
             </div>
         </section>
     );
 };
+const PartnersSection: React.FC = () => {
+    const partners = [
+        { name: 'Galp', src: '/assets/partners/galp.png' },
+        { name: 'Plenitude', src: '/assets/partners/plenitude.png' },
+        { name: 'Endesa', src: '/assets/partners/endesa.png' },
+        { name: 'Energia', src: '/assets/partners/energia.png' },
+        { name: 'Repsol', src: '/assets/partners/repsol.jpeg' },
+        { name: 'Audax', src: '/assets/partners/audax.jpeg' },
+        { name: 'Iberdrola', src: '/assets/partners/iberdrola.jpg' },
+        { name: 'Yes Energy', src: '/assets/partners/yes.png' },
+        { name: 'EDP', src: '/assets/partners/edp.jpeg' },
+    ];
 
-const ComparisonTable: React.FC<{ settings: AppSettings }> = ({ settings }) => (
-    <section className="py-16 bg-brand-light">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="text-3xl font-bold text-brand-dark text-center mb-10">Compare e Comprove</h2>
-            <div className="overflow-x-auto">
-                <table className="w-full max-w-4xl mx-auto bg-white shadow-2xl rounded-2xl overflow-hidden">
-                    <thead>
-                        <tr className="bg-brand-blue text-white">
-                            <th className="p-4 text-left font-semibold">Característica</th>
-                            <th className="p-4 text-center font-semibold border-l border-blue-400">
-                                <div className="flex items-center justify-center"><ZapIcon className="h-5 w-5 mr-2" /> {settings.ourPlan.name}</div>
-                            </th>
-                            {settings.competitors.map(c => <th key={c.name} className="p-4 text-center font-semibold border-l border-blue-400">{c.name}</th>)}
-                        </tr>
-                    </thead>
-                    <tbody className="divide-y divide-gray-200">
-                        <tr className="hover:bg-gray-50">
-                            <td className="p-4 font-medium text-gray-800">Preço Energia (kWh)</td>
-                            <td className="p-4 text-center font-bold text-brand-green">€{settings.ourPlan.energyPrice.toFixed(3)}</td>
-                            {settings.competitors.map(c => <td key={c.name} className="p-4 text-center text-gray-600">€{c.energyPrice.toFixed(3)}</td>)}
-                        </tr>
-                        <tr className="hover:bg-gray-50">
-                            <td className="p-4 font-medium text-gray-800">Preço Gás (m³)</td>
-                            <td className="p-4 text-center font-bold text-brand-green">€{settings.ourPlan.gasPrice.toFixed(3)}</td>
-                             {settings.competitors.map(c => <td key={c.name} className="p-4 text-center text-gray-600">€{c.gasPrice.toFixed(3)}</td>)}
-                        </tr>
-                        <tr className="hover:bg-gray-50">
-                            <td className="p-4 font-medium text-gray-800">Adesão Online</td>
-                            <td className="p-4 text-center"><CheckCircleIcon className="h-6 w-6 text-brand-green mx-auto" /></td>
-                            <td className="p-4 text-center"><CheckCircleIcon className="h-6 w-6 text-brand-green mx-auto" /></td>
-                            <td className="p-4 text-center"><CheckCircleIcon className="h-6 w-6 text-brand-green mx-auto" /></td>
-                            <td className="p-4 text-center"><CheckCircleIcon className="h-6 w-6 text-brand-green mx-auto" /></td>
-                        </tr>
-                        <tr className="hover:bg-gray-50">
-                            <td className="p-4 font-medium text-gray-800">Sem Fidelização</td>
-                            <td className="p-4 text-center"><CheckCircleIcon className="h-6 w-6 text-brand-green mx-auto" /></td>
-                            <td className="p-4 text-center"><CheckCircleIcon className="h-6 w-6 text-gray-300 mx-auto" /></td>
-                            <td className="p-4 text-center"><CheckCircleIcon className="h-6 w-6 text-brand-green mx-auto" /></td>
-                            <td className="p-4 text-center"><CheckCircleIcon className="h-6 w-6 text-gray-300 mx-auto" /></td>
-                        </tr>
-                    </tbody>
-                </table>
+    return (
+        <section className="py-16 bg-white">
+            <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+                <h2 className="text-2xl md:text-3xl font-bold text-brand-dark text-center mb-10">
+                    Nossos Parceiros no Setor Energético
+                </h2>
+
+                {/* Grid com responsividade + dicas aplicadas */}
+                <div className="grid grid-cols-3 md:grid-cols-5 lg:grid-cols-9 gap-6 items-center justify-items-center 
+                                opacity-70 hover:opacity-100 transition-opacity duration-300">
+                    {partners.map((partner) => (
+                        <div
+                            key={partner.name}
+                            className="flex items-center justify-center p-4 bg-gray-50 rounded-lg 
+                                       shadow-sm hover:shadow-md transition-shadow duration-300"
+                            title={partner.name}
+                        >
+                            <img
+                                src={partner.src}
+                                alt={`Logo ${partner.name}`}
+                                className="h-12 w-auto object-contain 
+                                           transition-transform duration-300 ease-out
+                                           hover:scale-150" // ← ZOOM AQUI!
+                                loading="lazy"
+                            />
+                        </div>
+                    ))}
+                </div>
+
+                <p className="text-center text-sm text-gray-500 mt-8 max-w-2xl mx-auto">
+                    Trabalhamos com as principais empresas do mercado para garantir a melhor oferta para si.
+                </p>
             </div>
-        </div>
-    </section>
-);
+        </section>
+    );
+};
+
 
 
 const TrustBadges: React.FC = () => (
@@ -149,6 +158,75 @@ const TrustBadges: React.FC = () => (
         </div>
     </section>
 );
+
+const ValuePropositionSection: React.FC = () => {
+    const benefits = [
+        {
+            icon: <ZapIcon className="h-8 w-8 text-brand-green" />,
+            title: "Análise Personalizada",
+            desc: "Estudamos o seu consumo real e comparamos todas as tarifas do mercado."
+        },
+        {
+            icon: <ShieldIcon className="h-8 w-8 text-brand-green" />,
+            title: "100% Imparcial",
+            desc: "Somos parceiros de todas as empresas. Escolhemos a melhor para si, sem comissões ocultas."
+        },
+        {
+            icon: <EuroIcon className="h-8 w-8 text-brand-green" />,
+            title: "Sem Custos, Sem Fidelização",
+            desc: "Mudança gratuita. Pode sair quando quiser. Zero riscos."
+        },
+        {
+            icon: <CheckCircleIcon className="h-8 w-8 text-brand-green" />,
+            title: "Tudo Online em 2 Minutos",
+            desc: "Simule, escolha e adira sem sair de casa. Nós tratamos do resto."
+        }
+    ];
+
+    return (
+        <section className="py-16 bg-brand-light">
+            <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+                <h2 className="text-3xl md:text-4xl font-bold text-brand-dark text-center mb-4">
+                    Porquê Escolher o Nosso Serviço?
+                </h2>
+                <p className="text-lg text-gray-600 text-center mb-12 max-w-3xl mx-auto">
+                    Não vendemos um plano. <strong>Vendemos poupança.</strong> Analisamos <em>todas</em> as opções e entregamos a melhor para si.
+                </p>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                    {benefits.map((benefit, index) => (
+                        <div
+                            key={index}
+                            className="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 text-center group"
+                        >
+                            <div className="inline-flex items-center justify-center w-16 h-16 bg-gray-50 rounded-full mb-4 
+                group-hover:bg-blue-100 group-hover:bg-opacity-90 
+                transition-all duration-300">
+                                {benefit.icon}
+                            </div>
+                            <h3 className="text-xl font-bold text-brand-dark mb-2">{benefit.title}</h3>
+                            <p className="text-gray-600 text-sm">{benefit.desc}</p>
+                        </div>
+                    ))}
+                </div>
+
+                <div className="text-center mt-12">
+                    <a
+                        href="#simulacao"
+                        className="inline-block bg-brand-orange hover:bg-orange-600 text-white font-bold py-4 px-8 rounded-full shadow-xl text-lg transition duration-300 transform hover:scale-105"
+                    >
+                        Simule Grátis e Descubra a Sua Poupança
+                    </a>
+                </div>
+
+                <p className="text-center text-sm text-gray-500 mt-8 max-w-2xl mx-auto italic">
+                    <strong>Nota:</strong> Trabalhamos com <strong>Galp, EDP, Iberdrola, Endesa, Repsol, Audax, Plenitude, Yes Energy</strong> e outras. 
+                    A melhor oferta é sempre a que mais poupa <em>no seu caso específico</em>.
+                </p>
+            </div>
+        </section>
+    );
+};
 
 
 const TestimonialsSection: React.FC = () => (
@@ -230,19 +308,23 @@ const LandingPage: React.FC<LandingPageProps> = ({ onNewLead, onBackofficeClick,
     return (
         <div className="bg-brand-light">
             <Header onBackofficeClick={onBackofficeClick} />
-            <main>
-                <Hero />
-                <Calculator savingsPercentage={settings.landingPageSavingsPercentage} />
-                <ComparisonTable settings={settings} />
-                <section id="simulacao" className="py-16 bg-brand-blue">
-                    <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-                        <LeadForm onNewLead={onNewLead} />
-                    </div>
-                </section>
-                <TestimonialsSection />
-                <TrustBadges />
-                <FaqSection />
-            </main>
+          <main>
+    <Hero />
+    <PartnersSection /> {/* ← Aqui os parceiros, logo após o Hero */}
+    <ValuePropositionSection />
+    <Calculator savingsPercentage={settings.landingPageSavingsPercentage} />
+    
+    
+    <section id="simulacao" className="py-16 bg-brand-blue">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+            <LeadForm onNewLead={onNewLead} />
+        </div>
+    </section>
+
+    <TestimonialsSection />
+    <TrustBadges />
+    <FaqSection />
+</main>
             <Footer />
         </div>
     );
