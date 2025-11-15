@@ -23,7 +23,7 @@ export enum Priority {
     LOW = 'LOW',
 }
 
-export interface ContactHistory {
+export interface ContactHistoryEntry { // ← CORRIGIDO o nome
     id: string;
     date: string;
     notes: string;
@@ -46,19 +46,21 @@ export interface Lead {
     avgGasBill: number;
     contractedPower: number;
     tariffType: TariffType;
+    // Additional fields from form
+    yearsWithProvider: number; // ← MOVIDO para ficar junto com outros dados
+    changeHistory: number; // ← MOVIDO para ficar junto com outros dados
     // Internal Data
     score: number;
     status: LeadStatus;
     priority: Priority;
-    contactHistory: ContactHistory[];
+    contactHistory: ContactHistoryEntry[]; // ← CORRIGIDO o tipo
     createdAt: string;
     // Engagement Data (for scoring)
     visitedCalculator: boolean;
     timeOnPage: number; // in seconds
-    yearsWithProvider: number;
-    changeHistory: number;
 }
 
+// Para novos leads, incluir todos os campos exceto id e createdAt
 export type NewLeadData = Omit<Lead, 'id' | 'createdAt'>;
 
 export interface Competitor {
